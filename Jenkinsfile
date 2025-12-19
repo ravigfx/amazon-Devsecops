@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        jdk 'jdk21'
+        jdk 'jdk17'
         nodejs 'node16'
     }
     environment {
@@ -60,7 +60,7 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                    env.IMAGE_TAG = "ravigfx420/amazon:${BUILD_NUMBER}"
+                    env.IMAGE_TAG = "ravigfx/amazon:${BUILD_NUMBER}"
                     // Optional cleanup
                     sh "docker rmi -f amazon ${env.IMAGE_TAG} || true"
                     sh "docker build -t amazon ."
@@ -71,12 +71,12 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'docker-cred', variable: 'dockerpwd')]) {
-                        sh "docker login -u ravigfx420 -p ${dockerpwd}"
+                        sh "docker login -u ravigfx -p ${dockerpwd}"
                         sh "docker tag amazon ${env.IMAGE_TAG}"
                         sh "docker push ${env.IMAGE_TAG}"
                         // Also push latest
-                        sh "docker tag amazon ravigfx420/amazon:latest"
-                        sh "docker push ravigfx420/amazon:latest"
+                        sh "docker tag amazon ravigfx/amazon:latest"
+                        sh "docker push ravigfx/amazon:latest"
                     }
                 }
             }
