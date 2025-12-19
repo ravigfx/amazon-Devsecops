@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        jdk 'jdk21'
+        jdk 'jdk17'
         nodejs 'node16'
     }
     environment {
@@ -15,7 +15,7 @@ pipeline {
         }
         stage("Git Checkout") {
             steps {
-                git branch: 'main', url: 'https://github.com/ravigfx/amazon-Devsecops.git'
+                git branch: 'master', url: 'https://github.com/ravigfx/amazon-Devsecops.git'
             }
         }
         stage("SonarQube Analysis") {
